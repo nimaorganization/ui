@@ -1,25 +1,32 @@
 name: buildAndPush
 on:
   workflow_dispatch:
+
 permissions:
   id-token: write
   contents: read
+
 jobs:
   buildAndPush:
     name: build and push to acr
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.0      
-      - name: image build
-        run: docker build -t todo007.azurecr.io/todo-ui:v1 .
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
       - name: Azure Login
-        uses: Azure/login@v2.3.0
+        uses: azure/login@v3.0
         with:
-          client-id: "e8c830a1-d750-4619-a0d0-822aa45f1086"
-          tenant-id: "5c09c46b-8034-4002-8418-77ce48be97db"
-          subscription-id: "b4461466-1e6b-4be2-bb70-1e96a72a41c8"
-      - name: acr login
-        run: az acr login --name todo007
-      - name: push to acr
-        run: docker push todo007.azurecr.io/todo-ui:v1
+          client-id: "26639a35-b97f-446d-96f8-80aba820cf1b"
+          tenant-id: "90c2d389-705b-4327-885c-ab24afe7aa51"
+          subscription-id: "77312bdf-fff4-4e77-9d06-5e69870a682c"
+
+      - name: Login to ACR
+        run: az acr login --name cntainer123
+
+      - name: Build Docker Image
+        run: docker build -t cntainer123.azurecr.io/hello-nima:v2 .
+
+      - name: Push Docker Image
+        run: docker push cntainer123.azurecr.io/hello-nima:v2
